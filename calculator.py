@@ -11,7 +11,11 @@ class Assignment:
     def __init__(self, section, grade, date, foo):
         with open("assignments.txt", "r") as f:
             data = f.readlines()
-        self.count = int(data[0].split(" ")[1])
+        if foo:
+            self.count = int(data[0].split(" ")[1])
+        else:
+            while self.count in dictionary:
+                self.count += 1
         self.id = self.count
         self.count += 1
         data[0] = "count: " + str(self.count) + "\n"
@@ -64,6 +68,7 @@ def calculate_grade():
     final = 0
     count = 0
     for assignment in dictionary:
+        print(dictionary[assignment].grade is int)
         if dictionary[assignment].section == "quiz":
             quizzes += dictionary[assignment].grade
             count += 1
@@ -99,15 +104,15 @@ def get_input():
             section = input("Section: ")
             grade = input("Grade: ")
             date = input("Date: ")
-            Assignment(section, grade, date, True)
+            Assignment(section, int(grade), date, True)
             print("Successfully added assignment!")
         elif choice == "modify":
             id = input("ID: ")
-            modify(id)
+            modify(int(id))
             print("Successfully modified assignment!")
         elif choice == "delete":
             id = input("ID: ")
-            delete(id)
+            delete(int(id))
             print("Successfully deleted assignment!")
         elif choice == "calculate":
             print(calculate_grade())
@@ -125,6 +130,8 @@ def fill_dictionary():
     with open("assignments.txt", "r") as f:
         data = f.readlines()
     for i in range(1, len(data)):
+        if data[i] == "\n":
+            continue
         line = data[i].split(",")
         Assignment(line[1], int(line[2]), line[3].strip(), False)
 
@@ -136,7 +143,7 @@ def see_all():
 
 def clear():
     dictionary.clear()
-    # deletes line in file
+    # deletes all lines in file
     with open("assignments.txt", "r") as f:
         data = f.readlines()
     data = ["count: 0\n"]
