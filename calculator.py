@@ -20,7 +20,7 @@ class Assignment:
         self.count += 1
         data[0] = "count: " + str(self.count) + "\n"
         self.section = section
-        self.grade = grade
+        self.grade = int(grade)
         self.date = date
         dictionary[self.id] = self
         if foo:
@@ -68,7 +68,6 @@ def calculate_grade():
     final = 0
     count = 0
     for assignment in dictionary:
-        print(dictionary[assignment].grade is int)
         if dictionary[assignment].section == "quiz":
             quizzes += dictionary[assignment].grade
             count += 1
@@ -115,7 +114,7 @@ def get_input():
             delete(int(id))
             print("Successfully deleted assignment!")
         elif choice == "calculate":
-            print(calculate_grade())
+            print("Your grade is: {}%".format(calculate_grade()))
         elif choice == "see all":
             see_all()
         elif choice == "clear":
