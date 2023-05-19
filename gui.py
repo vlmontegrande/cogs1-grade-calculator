@@ -3,17 +3,6 @@ from tkinter import *
 # from tkinter.ttk import *
 from calculator_test import *
 
-# create root window
-root = Tk()
-
-# root window title and dimension
-root.title("Cogs 1 Grade Calculator")
-# Set geometry (widthxheight)
-root.geometry('1000x600')
-
-# all widgets will be here
-welcome = Label(text="Hello! Welcome to the COGS 1 Grade Calculator!", width=50, height=2)
-
 menu_message = """
 Choose one of the following options:
 1. Add assignment (type add)
@@ -24,20 +13,55 @@ Choose one of the following options:
 6. Exit (type exit)
 """
 
-label_menu = Label(text=menu_message, width=100, height=10)
-entry1 = Entry(width=50)
 
-welcome.pack()
+class MainWindow:
 
-label_menu.pack()
-entry1.pack()
+    def __init__(self, window):
+        self.window = window
+        self.frame = Frame(window, width=0, height=0)
+        self.welcome = Label(self.frame, text="Hello! Welcome to the COGS 1 Grade Calculator!", width=50, height=2)
+        self.menu = Label(self.frame, text=menu_message, width=100, height=10)
+        self.entry = Entry(self.frame, width=50)
+        self.welcome.pack()
+        self.menu.pack()
+        self.btn = Button(self.frame, text="Button", command=self.command)
+        self.frame.grid(row=0, column=0)
+        self.btn.pack()
+        self.frame.pack()
+
+    def command(self):
+
+        self.newWindow = Toplevel(self.window)
+        self.app = OtherWindow(self.newWindow)
 
 
+class OtherWindow:
 
-# Execute Tkinter
+    def __init__(self, master):
+        self.master = master
+        self.frame = Frame(master)
+        master.title("a")
+        self.quitButton = Button(self.frame, text='Quit', width=25, command=self.close_window)
+        self.quitButton.pack()
+        self.frame.pack()
+
+    def close_window(self):
+        self.master.destroy()
+
+
+# create root window
+root = Tk()
+
+# root window title and dimension
+root.title("Cogs 1 Grade Calculator")
+# Set geometry (widthxheight)
+root.geometry('500x300')
+
+cls = MainWindow(root)
+
 root.mainloop()
 
-option = entry1.get()
+# option = entry1.get()
 while option != exit:
     if option == "add":
         section = input("Section: ")
