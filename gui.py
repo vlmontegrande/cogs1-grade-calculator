@@ -42,11 +42,11 @@ class MainWindow:
 
         self.welcome.pack()
 
-        self.btn1 = Button(self.label_frame, text="Add", command=self.command)
-        self.btn2 = Button(self.label_frame, text="Modify", command=self.command)
-        self.btn3 = Button(self.label_frame, text="Delete", command=self.command)
-        self.btn4 = Button(self.label_frame, text="Calculate", command=self.command)
-        self.btn5 = Button(self.label_frame, text="View", command=self.command)
+        self.btn1 = Button(self.label_frame, text="Add", command=self.create_new_window)
+        self.btn2 = Button(self.label_frame, text="Modify", command=self.create_new_window)
+        self.btn3 = Button(self.label_frame, text="Delete", command=self.create_new_window)
+        self.btn4 = Button(self.label_frame, text="Calculate", command=self.create_new_window)
+        self.btn5 = Button(self.label_frame, text="View", command=self.create_new_window)
         self.btn6 = Button(self.label_frame, text="Exit", command=self.destroy)
 
         self.btn1.grid(row=0, column=1)
@@ -58,10 +58,8 @@ class MainWindow:
 
         self.label_frame.pack()
 
-    def command(self):
-
-        self.newWindow = Toplevel(self.window)
-        self.app = OtherWindow(self.newWindow)
+    def create_new_window(self, command):
+        self.op_window = OtherWindow(self.newWindow, command)
 
     def destroy(self):
         self.window.destroy()
@@ -69,7 +67,7 @@ class MainWindow:
 
 class OtherWindow:
 
-    def __init__(self, master):
+    def __init__(self, master, command):
         self.master = master
         self.frame = Frame(master)
         master.title("a")
