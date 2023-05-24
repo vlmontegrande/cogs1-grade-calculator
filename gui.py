@@ -3,36 +3,68 @@ from tkinter import *
 # from tkinter.ttk import *
 from calculator_test import *
 
-menu_message = """
-Choose one of the following options:
-1. Add assignment (type add)
-2. Modify assignment (type modify)
-3. Delete assignment (type delete)
-4. Calculate grade (type calculate)
-5. View assignments (type view)
-6. Exit (type exit)
-"""
+menu1 = "1. Add assignment (type add)"
+menu2 = "2. Modify assignment (type modify)"
+menu3 = "3. Delete assignment (type delete)"
+menu4 = "4. Calculate grade (type calculate)"
+menu5 = "5. View assignments (type view)"
+menu6 = "6. Exit (type exit)"
 
 
 class MainWindow:
 
     def __init__(self, window):
         self.window = window
-        self.frame = Frame(window, width=0, height=0)
-        self.welcome = Label(self.frame, text="Hello! Welcome to the COGS 1 Grade Calculator!", width=50, height=2)
-        self.menu = Label(self.frame, text=menu_message, width=100, height=10)
-        self.entry = Entry(self.frame, width=50)
+
+        self.label_frame = Frame(window)
+        self.label_frame.rowconfigure(0, weight=1)
+        self.label_frame.rowconfigure(1, weight=1)
+        self.label_frame.rowconfigure(2, weight=1)
+        self.label_frame.rowconfigure(3, weight=1)
+        self.label_frame.rowconfigure(4, weight=1)
+        self.label_frame.columnconfigure(0, weight=1)
+        self.label_frame.columnconfigure(1, weight=1)
+
+        self.welcome = Label(self.window, text="Hello! Welcome to the COGS 1 Grade Calculator!", width=50, height=2)
+        self.menu1 = Label(self.label_frame, text=menu1)
+        self.menu2 = Label(self.label_frame, text=menu2)
+        self.menu3 = Label(self.label_frame, text=menu3)
+        self.menu4 = Label(self.label_frame, text=menu4)
+        self.menu5 = Label(self.label_frame, text=menu5)
+        self.menu6 = Label(self.label_frame, text=menu6)
+
+        self.menu1.grid(row=0, column=0)
+        self.menu2.grid(row=1, column=0)
+        self.menu3.grid(row=2, column=0)
+        self.menu4.grid(row=3, column=0)
+        self.menu5.grid(row=4, column=0)
+        self.menu6.grid(row=5, column=0)
+
         self.welcome.pack()
-        self.menu.pack()
-        self.btn = Button(self.frame, text="Button", command=self.command)
-        self.frame.grid(row=0, column=0)
-        self.btn.pack()
-        self.frame.pack()
+
+        self.btn1 = Button(self.label_frame, text="Add", command=self.command)
+        self.btn2 = Button(self.label_frame, text="Modify", command=self.command)
+        self.btn3 = Button(self.label_frame, text="Delete", command=self.command)
+        self.btn4 = Button(self.label_frame, text="Calculate", command=self.command)
+        self.btn5 = Button(self.label_frame, text="View", command=self.command)
+        self.btn6 = Button(self.label_frame, text="Exit", command=self.destroy)
+
+        self.btn1.grid(row=0, column=1)
+        self.btn2.grid(row=1, column=1)
+        self.btn3.grid(row=2, column=1)
+        self.btn4.grid(row=3, column=1)
+        self.btn5.grid(row=4, column=1)
+        self.btn6.grid(row=5, column=1)
+
+        self.label_frame.pack()
 
     def command(self):
 
         self.newWindow = Toplevel(self.window)
         self.app = OtherWindow(self.newWindow)
+
+    def destroy(self):
+        self.window.destroy()
 
 
 class OtherWindow:
@@ -61,7 +93,8 @@ cls = MainWindow(root)
 
 root.mainloop()
 
-# option = entry1.get()
+"""
+option = entry1.get()
 while option != exit:
     if option == "add":
         section = input("Section: ")
@@ -86,3 +119,4 @@ while option != exit:
     else:
         print("Invalid option")
     option = input("Type your answer: ")
+"""
