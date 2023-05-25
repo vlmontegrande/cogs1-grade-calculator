@@ -85,6 +85,18 @@ def calculate_grade():
     return quizzes * 0.25 + midterm1 * 0.25 + midterm2 * 0.25 + final * 0.25
 
 
+def view_assignments():
+    out = ""
+    i = 1
+    for assignment in dictionary:
+        section = dictionary[assignment].section
+        grade = dictionary[assignment].grade
+        date = dictionary[assignment].date
+        out += "Assignment " + str(i) + "\nSection: " + section + "\nGrade: " + str(grade) + "\nDate: " + date + "\n\n"
+        i += 1
+    return out
+
+
 '''
 def get_input():
     choice = ""

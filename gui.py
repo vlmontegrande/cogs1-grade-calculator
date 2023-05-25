@@ -51,7 +51,7 @@ class MainWindow:
                            font=("Arial", 12))
         self.btn4 = Button(self.label_frame, text="Calculate", command=self.calculate,
                            font=("Arial", 12))
-        self.btn5 = Button(self.label_frame, text="View", command=lambda: self.create_new_window("view"),
+        self.btn5 = Button(self.label_frame, text="View", command=self.view,
                            font=("Arial", 12))
         self.btn6 = Button(self.label_frame, text="Exit", command=self.destroy, font=("Arial", 12))
 
@@ -73,11 +73,13 @@ class MainWindow:
         new_window.grab_set()
         new_window.focus_set()
         new_window.transient(self.window)
-        new_window.protocol("WM_DELETE_WINDOW", lambda: self.close_window(new_window))
         OtherWindow(new_window, command)
 
     def calculate(self):
         messagebox.showinfo("Calculate", "Your grade is: {}%".format(calculate_grade()))
+
+    def view(self):
+        messagebox.showinfo("View", "Your assignments are:\n\n{}".format(view_assignments()))
 
     def destroy(self):
         close = messagebox.askokcancel("Quit", "Do you want to quit?")
@@ -91,6 +93,7 @@ class OtherWindow:
         self.master = master
         self.command = command
         self.set_up_window()
+        master.protocol("WM_DELETE_WINDOW", self.close_window)
 
     def set_up_window(self, command=None):
         if command == "add" or self.command == "add":
