@@ -1,6 +1,7 @@
 # Import Module
 from tkinter import *
 from tkinter import messagebox
+from calculator_test import *
 
 menu1 = "1. Add assignment"
 menu2 = "2. Modify assignment"
@@ -24,13 +25,14 @@ class MainWindow:
         self.label_frame.columnconfigure(0, weight=1)
         self.label_frame.columnconfigure(1, weight=1)
 
-        self.welcome = Label(self.window, text="Hello! Welcome to the COGS 1 Grade Calculator!", width=50, height=2)
-        self.menu1 = Label(self.label_frame, text=menu1)
-        self.menu2 = Label(self.label_frame, text=menu2)
-        self.menu3 = Label(self.label_frame, text=menu3)
-        self.menu4 = Label(self.label_frame, text=menu4)
-        self.menu5 = Label(self.label_frame, text=menu5)
-        self.menu6 = Label(self.label_frame, text=menu6)
+        self.welcome = Label(self.window, text="Hello! Welcome to the COGS 1 Grade Calculator!", width=50, height=2,
+                             font=("Arial", 12))
+        self.menu1 = Label(self.label_frame, text=menu1, font=("Arial", 12))
+        self.menu2 = Label(self.label_frame, text=menu2, font=("Arial", 12))
+        self.menu3 = Label(self.label_frame, text=menu3, font=("Arial", 12))
+        self.menu4 = Label(self.label_frame, text=menu4, font=("Arial", 12))
+        self.menu5 = Label(self.label_frame, text=menu5, font=("Arial", 12))
+        self.menu6 = Label(self.label_frame, text=menu6, font=("Arial", 12))
 
         self.menu1.grid(row=0, column=0)
         self.menu2.grid(row=1, column=0)
@@ -41,12 +43,17 @@ class MainWindow:
 
         self.welcome.pack()
 
-        self.btn1 = Button(self.label_frame, text="Add", command=lambda: self.create_new_window("add"))
-        self.btn2 = Button(self.label_frame, text="Modify", command=lambda: self.create_new_window("modify"))
-        self.btn3 = Button(self.label_frame, text="Delete", command=lambda: self.create_new_window("delete"))
-        self.btn4 = Button(self.label_frame, text="Calculate", command=lambda: self.create_new_window("calculate"))
-        self.btn5 = Button(self.label_frame, text="View", command=lambda: self.create_new_window("view"))
-        self.btn6 = Button(self.label_frame, text="Exit", command=self.destroy)
+        self.btn1 = Button(self.label_frame, text="Add", command=lambda: self.create_new_window("add"),
+                           font=("Arial", 12))
+        self.btn2 = Button(self.label_frame, text="Modify", command=lambda: self.create_new_window("modify"),
+                           font=("Arial", 12))
+        self.btn3 = Button(self.label_frame, text="Delete", command=lambda: self.create_new_window("delete"),
+                           font=("Arial", 12))
+        self.btn4 = Button(self.label_frame, text="Calculate", command=self.calculate,
+                           font=("Arial", 12))
+        self.btn5 = Button(self.label_frame, text="View", command=lambda: self.create_new_window("view"),
+                           font=("Arial", 12))
+        self.btn6 = Button(self.label_frame, text="Exit", command=self.destroy, font=("Arial", 12))
 
         self.btn1.grid(row=0, column=1)
         self.btn2.grid(row=1, column=1)
@@ -56,6 +63,7 @@ class MainWindow:
         self.btn6.grid(row=5, column=1)
 
         self.label_frame.pack()
+        window.protocol("WM_DELETE_WINDOW", self.destroy)
 
     def create_new_window(self, command):
         new_window = Toplevel(self.window)
@@ -65,8 +73,11 @@ class MainWindow:
         new_window.grab_set()
         new_window.focus_set()
         new_window.transient(self.window)
-        # new_window.protocol("WM_DELETE_WINDOW", lambda: self.close_window(new_window))
+        new_window.protocol("WM_DELETE_WINDOW", lambda: self.close_window(new_window))
         OtherWindow(new_window, command)
+
+    def calculate(self):
+        messagebox.showinfo("Calculate", "Your grade is: {}%".format(calculate_grade()))
 
     def destroy(self):
         close = messagebox.askokcancel("Quit", "Do you want to quit?")
@@ -81,8 +92,8 @@ class OtherWindow:
         self.command = command
         self.set_up_window()
 
-    def set_up_window(self):
-        if self.command == "add":
+    def set_up_window(self, command=None):
+        if command == "add" or self.command == "add":
             self.master.title("Add Assignment")
             self.master.geometry('500x300')
             frame = Frame(self.master, height=500, width=300, padx=10, pady=10)
@@ -93,31 +104,32 @@ class OtherWindow:
             frame.columnconfigure(0, weight=1, minsize=150)
             frame.columnconfigure(1, weight=1, minsize=150)
 
-            label1 = Label(frame, text="Section: ")
-            label2 = Label(frame, text="Grade: ")
-            label3 = Label(frame, text="Date: ")
+            label1 = Label(frame, text="Section: ", font=("Arial", 12))
+            label2 = Label(frame, text="Grade: ", font=("Arial", 12))
+            label3 = Label(frame, text="Date: ", font=("Arial", 12))
 
             entry1 = Entry(frame)
             entry2 = Entry(frame)
             entry3 = Entry(frame)
 
-            label1.grid(row=0, column=0)
-            label2.grid(row=1, column=0)
-            label3.grid(row=2, column=0)
+            label1.grid(row=0, column=0, padx=10, pady=10)
+            label2.grid(row=1, column=0, padx=10, pady=10)
+            label3.grid(row=2, column=0, padx=10, pady=10)
 
-            entry1.grid(row=0, column=1)
-            entry2.grid(row=1, column=1)
-            entry3.grid(row=2, column=1)
+            entry1.grid(row=0, column=1, padx=10, pady=10)
+            entry2.grid(row=1, column=1, padx=10, pady=10)
+            entry3.grid(row=2, column=1, padx=10, pady=10)
 
             frame.pack()
 
-            btn1 = Button(frame, text="Add", command=self.add)
-            btn2 = Button(frame, text="Cancel", command=self.close_window)
+            btn1 = Button(frame, text="Add", command=lambda: self.add(entry1, entry2, entry3),
+                          font=("Arial", 12))
+            btn2 = Button(frame, text="Cancel", command=self.close_window, font=("Arial", 12))
 
-            btn1.grid(row=3, column=0)
-            btn2.grid(row=3, column=1)
+            btn1.grid(row=3, column=0, padx=10, pady=10)
+            btn2.grid(row=3, column=1, padx=10, pady=10)
 
-        elif self.command == "modify":
+        elif command == "modify" or self.command == "modify":
             self.master.title("Modify Assignment")
             self.master.geometry('500x300')
             frame = Frame(self.master, height=500, width=300, padx=10, pady=10)
@@ -126,27 +138,45 @@ class OtherWindow:
             frame.rowconfigure(2, weight=1, minsize=50)
             frame.rowconfigure(3, weight=1, minsize=50)
             frame.rowconfigure(4, weight=1, minsize=50)
-            frame.columnconfigure(0, weight=1, minsize=150)
-            frame.columnconfigure(1, weight=1, minsize=150)
-            frame.columnconfigure(2, weight=1, minsize=150)
+            frame.columnconfigure(0, weight=1, minsize=100)
+            frame.columnconfigure(1, weight=1, minsize=100)
+            frame.columnconfigure(2, weight=1, minsize=100)
 
-            label1 = Label(frame, text="ID: ")
+            label1 = Label(frame, text="ID:", font=("Arial", 12))
             entry1 = Entry(frame)
-            btn1 = Button(frame, text="Find Assignment", command=lambda: self.find(frame, entry1, btn1, label1))
+            btn1 = Button(frame, text="Find Assignment", command=lambda: self.find_to_modify(frame, entry1, btn1, label1),
+                          font=("Arial", 12))
 
-            label1.grid(row=0, column=0)
-            entry1.grid(row=0, column=1)
-            btn1.grid(row=1, column=1)
+            label1.grid(row=0, column=0, padx=10, pady=10)
+            entry1.grid(row=0, column=1, padx=10, pady=10)
+            btn1.grid(row=1, column=1, padx=10, pady=10)
 
             frame.pack()
-        elif self.command == "delete":
-            self.delete()
-        elif self.command == "calculate":
-            self.calculate()
-        elif self.command == "view":
-            self.view()
+        elif command == "delete" or self.command == "delete":
+            self.master.title("Delete Assignment")
+            self.master.geometry('500x300')
+            frame = Frame(self.master, height=500, width=300, padx=10, pady=10)
+            frame.rowconfigure(0, weight=1, minsize=50)
+            frame.rowconfigure(1, weight=1, minsize=50)
+            frame.rowconfigure(2, weight=1, minsize=50)
+            frame.rowconfigure(3, weight=1, minsize=50)
+            frame.rowconfigure(4, weight=1, minsize=50)
+            frame.columnconfigure(0, weight=1, minsize=100)
+            frame.columnconfigure(1, weight=1, minsize=100)
+            frame.columnconfigure(2, weight=1, minsize=100)
 
-    def find(self, frame, entry, btn, label):
+            label1 = Label(frame, text="ID:", font=("Arial", 12))
+            entry1 = Entry(frame)
+            btn1 = Button(frame, text="Delete", command=lambda: self.find_to_delete(frame, entry1),
+                          font=("Arial", 12))
+
+            label1.grid(row=0, column=0, padx=10, pady=10)
+            entry1.grid(row=0, column=1, padx=10, pady=10)
+            btn1.grid(row=1, column=1, padx=10, pady=10)
+
+            frame.pack()
+
+    def find_to_delete(self, frame, entry):
         # Finds assignment with given id
         # If found, displays assignment info
         # If not found, displays error message
@@ -156,67 +186,100 @@ class OtherWindow:
         with open("assignments.txt", "r") as f:
             lines = f.readlines()
             for line in lines:
-                if line[0] == entry.get():
+                if line[0] == entry.get().strip():
                     # Display assignment info
                     line = line.split(",")
-                    section = line[1]
-                    grade = line[2]
-                    date = line[3]
+                    section = line[1].strip()
+                    grade = line[2].strip()
+                    date = line[3].strip()
                     break
             else:
                 messagebox.showerror("Error", "Assignment not found")
+                self.set_up_window("delete")
+                return
+        foo = messagebox.askokcancel("Delete Assignment", "Are you sure you want to delete this assignment?\n\nID: " + entry.get() + "\nSection: " + section + "\nGrade: " + grade + "\nDate: " + date)
+        if foo:
+            messagebox.showinfo("Success", "Assignment deleted successfully")
+            delete(int(entry.get().strip()))
+            entry.delete(0, END)
+        else:
+            self.set_up_window("delete")
+
+    def find_to_modify(self, frame, entry, btn, label):
+        # Finds assignment with given id
+        # If found, displays assignment info
+        # If not found, displays error message
+        section = ""
+        grade = ""
+        date = ""
+        with open("assignments.txt", "r") as f:
+            lines = f.readlines()
+            for line in lines:
+                if line[0] == entry.get().strip():
+                    # Display assignment info
+                    line = line.split(",")
+                    section = line[1].strip()
+                    grade = line[2].strip()
+                    date = line[3].strip()
+                    break
+            else:
+                messagebox.showerror("Error", "Assignment not found")
+                self.set_up_window("modify")
+                return
 
         entry.destroy()
         btn.destroy()
         label.destroy()
 
-        label1 = Label(frame, text="Old section: \"" + section + "\"")
-        label2 = Label(frame, text="Old grade: \"" + grade + "\"")
-        label3 = Label(frame, text="Old date: \"" + date + "\"")
-        label4 = Label(frame, text="Section: ")
-        label5 = Label(frame, text="Grade: ")
-        label6 = Label(frame, text="Date: ")
+        label1 = Label(frame, text="Old section: \"" + section + "\"", font=("Arial", 12))
+        label2 = Label(frame, text="Old grade: \"" + grade + "\"", font=("Arial", 12))
+        label3 = Label(frame, text="Old date: \"" + date + "\"", font=("Arial", 12))
+        label4 = Label(frame, text="Section:", font=("Arial", 12))
+        label5 = Label(frame, text="Grade:", font=("Arial", 12))
+        label6 = Label(frame, text="Date:", font=("Arial", 12))
 
         entry1 = Entry(frame)
         entry2 = Entry(frame)
         entry3 = Entry(frame)
 
-        btn1 = Button(frame, text="Modify", command=lambda: self.modify(entry.get(), entry1.get(), entry2.get(), entry3.get()))
+        btn1 = Button(frame, text="Modify",
+                      command=lambda: self.modify(entry.get(), entry1.get(), entry2.get(), entry3.get()))
         btn2 = Button(frame, text="Cancel", command=self.close_window)
 
-        label1.grid(row=0, column=2)
-        label2.grid(row=1, column=2)
-        label3.grid(row=2, column=2)
-        label4.grid(row=0, column=0)
-        label5.grid(row=1, column=0)
-        label6.grid(row=2, column=0)
-        btn1.grid(row=3, column=0)
-        btn2.grid(row=3, column=1)
-        entry1.grid(row=0, column=1)
-        entry2.grid(row=1, column=1)
-        entry3.grid(row=2, column=1)
+        label1.grid(row=0, column=2, sticky=W, padx=10, pady=10)
+        label2.grid(row=1, column=2, sticky=W, padx=10, pady=10)
+        label3.grid(row=2, column=2, sticky=W, padx=10, pady=10)
+        label4.grid(row=0, column=0, sticky=W, padx=10, pady=10)
+        label5.grid(row=1, column=0, sticky=W, padx=10, pady=10)
+        label6.grid(row=2, column=0, sticky=W, padx=10, pady=10)
+        btn1.grid(row=3, column=0, padx=10, pady=10)
+        btn2.grid(row=3, column=1, padx=10, pady=10)
+        entry1.grid(row=0, column=1, padx=10, pady=10)
+        entry2.grid(row=1, column=1, padx=10, pady=10)
+        entry3.grid(row=2, column=1, padx=10, pady=10)
 
+    def add(self, entry1, entry2, entry3):
+        Assignment(entry1.get(), int(entry2.get()), entry3.get(), True)
+        entry1.delete(0, END)
+        entry2.delete(0, END)
+        entry3.delete(0, END)
+        messagebox.showinfo("Success", "Successfully added assignment!")
 
+    def modify(self, id, section, grade, date):
+        modify(int(id), section, int(grade), date)
 
+        messagebox.showinfo("Success", "Successfully modified assignment!")
 
-    def add(self):
-        pass
+    def delete(self, id):
+        delete(int(id))
 
-    def modify(self):
-        pass
-
-    def delete(self):
-        pass
-
-    def calculate(self):
-        pass
-
-    def view(self):
-        pass
+        messagebox.showinfo("Success", "Successfully deleted assignment!")
 
     def close_window(self):
         self.master.destroy()
 
+
+fill_dictionary()
 
 # create root window
 root = Tk()

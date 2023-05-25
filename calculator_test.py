@@ -12,13 +12,13 @@ class Assignment:
         with open("assignments.txt", "r") as f:
             data = f.readlines()
         if foo:
-            self.count = int(data[0].split(" ")[1])
+            Assignment.count = int(data[0].split(" ")[1])
         else:
             while self.count in dictionary:
                 self.count += 1
-        self.id = self.count
-        self.count += 1
-        data[0] = "count: " + str(self.count) + "\n"
+        self.id = Assignment.count
+        Assignment.count += 1
+        data[0] = "count: " + str(Assignment.count) + "\n"
         self.section = section
         self.grade = int(grade)
         self.date = date
@@ -37,11 +37,7 @@ class Assignment:
         return self.section + " " + str(self.grade) + " " + self.date
 
 
-def modify(id):
-    print("Modify assignment")
-    section = input("Section: ")
-    grade = input("Grade: ")
-    date = input("Date: ")
+def modify(id, section, grade, date):
     dictionary.get(id).update(section, grade, date)
     # writes changes to file
     with open("assignments.txt", "r") as f:
@@ -53,12 +49,15 @@ def modify(id):
 
 def delete(id):
     del dictionary[id]
+    Assignment.count -= 1
     # deletes line in file
     with open("assignments.txt", "r") as f:
         data = f.readlines()
-    data[id + 1] = "\n"
+    data[0] = "count: " + str(Assignment.count) + "\n"
     with open('assignments.txt', 'w') as f:
-        f.writelines(data)
+        for line in data:
+            if line.split(",")[0] != str(id):
+                f.write(line)
 
 
 def calculate_grade():
@@ -86,6 +85,7 @@ def calculate_grade():
     return quizzes * 0.25 + midterm1 * 0.25 + midterm2 * 0.25 + final * 0.25
 
 
+'''
 def get_input():
     choice = ""
     print("Hi! Welcome to the grade calculator!")
@@ -123,6 +123,7 @@ def get_input():
             print("Goodbye!")
         else:
             print("Invalid input")
+'''
 
 
 def fill_dictionary():
@@ -133,6 +134,7 @@ def fill_dictionary():
             continue
         line = data[i].split(",")
         Assignment(line[1], int(line[2]), line[3].strip(), False)
+    Assignment.count = int(data[0].split(" ")[1])
 
 
 def see_all():
@@ -148,12 +150,3 @@ def clear():
     data = ["count: 0\n"]
     with open('assignments.txt', 'w') as f:
         f.writelines(data)
-
-
-def main():
-    fill_dictionary()
-    get_input()
-
-
-# if __name__ == "__main__":
-    # main()
