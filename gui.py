@@ -147,7 +147,8 @@ class OtherWindow:
 
             label1 = Label(frame, text="ID:", font=("Arial", 12))
             entry1 = Entry(frame)
-            btn1 = Button(frame, text="Find Assignment", command=lambda: self.find_to_modify(frame, entry1, btn1, label1),
+            btn1 = Button(frame, text="Find Assignment",
+                          command=lambda: self.find_to_modify(frame, entry1, btn1, label1),
                           font=("Arial", 12))
 
             label1.grid(row=0, column=0, padx=10, pady=10)
@@ -181,32 +182,21 @@ class OtherWindow:
 
     def find_to_delete(self, frame, entry):
         # Finds assignment with given id
-        # If found, displays assignment info
+        # If found, deletes assignment
         # If not found, displays error message
-        section = ""
-        grade = ""
-        date = ""
         with open("assignments.txt", "r") as f:
             lines = f.readlines()
             for line in lines:
                 if line[0] == entry.get().strip():
-                    # Display assignment info
-                    line = line.split(",")
-                    section = line[1].strip()
-                    grade = line[2].strip()
-                    date = line[3].strip()
-                    break
+                    # Delete assignment
+                    delete(int(entry.get().strip()))
+                    messagebox.showinfo("Success", "Assignment deleted")
+                    self.set_up_window("delete")
+                    return
             else:
                 messagebox.showerror("Error", "Assignment not found")
                 self.set_up_window("delete")
                 return
-        foo = messagebox.askokcancel("Delete Assignment", "Are you sure you want to delete this assignment?\n\nID: " + entry.get() + "\nSection: " + section + "\nGrade: " + grade + "\nDate: " + date)
-        if foo:
-            messagebox.showinfo("Success", "Assignment deleted successfully")
-            delete(int(entry.get().strip()))
-            entry.delete(0, END)
-        else:
-            self.set_up_window("delete")
 
     def find_to_modify(self, frame, entry, btn, label):
         # Finds assignment with given id
@@ -230,6 +220,8 @@ class OtherWindow:
                 self.set_up_window("modify")
                 return
 
+        id = entry.get().strip()
+
         entry.destroy()
         btn.destroy()
         label.destroy()
@@ -246,7 +238,7 @@ class OtherWindow:
         entry3 = Entry(frame)
 
         btn1 = Button(frame, text="Modify",
-                      command=lambda: self.modify(entry.get(), entry1.get(), entry2.get(), entry3.get()))
+                      command=lambda: self.modify(id, entry1.get(), entry2.get(), entry3.get()))
         btn2 = Button(frame, text="Cancel", command=self.close_window)
 
         label1.grid(row=0, column=2, sticky=W, padx=10, pady=10)

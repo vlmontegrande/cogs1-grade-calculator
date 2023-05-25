@@ -1,5 +1,3 @@
-# get input from user for assignment
-
 import time
 
 dictionary = {}
@@ -87,7 +85,7 @@ def calculate_grade():
 
 def view_assignments():
     out = ""
-    i = 1
+    i = 0
     for assignment in dictionary:
         section = dictionary[assignment].section
         grade = dictionary[assignment].grade
