@@ -153,18 +153,22 @@ class OtherWindow:
         section = ""
         grade = ""
         date = ""
-        with open("assignments.txt", "r") as f:
-            lines = f.readlines()
-            for line in lines:
-                if line[0] == entry.get():
-                    # Display assignment info
-                    line = line.split(",")
-                    section = line[1]
-                    grade = line[2]
-                    date = line[3]
-                    break
-            else:
-                messagebox.showerror("Error", "Assignment not found")
+        var = True
+        while var:
+            with open("assignments.txt", "r") as f:
+                lines = f.readlines()
+                for line in lines:
+                    if line[0] == entry.get():
+                        # Display assignment info
+                        line = line.split(",")
+                        section = line[1]
+                        grade = line[2]
+                        date = line[3]
+                        var = False
+                else:
+                    messagebox.showerror("Error", "Assignment not found")
+                    # Get new id
+                    entry.delete(0, END)
 
         entry.destroy()
         btn.destroy()
